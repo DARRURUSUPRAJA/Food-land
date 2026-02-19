@@ -1,475 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+pipeline {
+    agent any
 
-<title>FoodSwag</title>
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
 
-<style>
-
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f2f2f2;
+        stage('Show Files') {
+            steps {
+                bat 'dir'
+            }
+        }
+    }
 }
 
-/* HEADER */
-.header{
-    background:#ff5a5f;
-    color:white;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:20px;
+
+2
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Print Directory') {
+            steps {
+                bat 'cd'
+            }
+        }
+    }
 }
 
-/* RIGHT SIDE COLUMN */
-.rightBox{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:6px;
+
+3
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Print Message') {
+            steps {
+                echo 'Hello! Jenkins Pipeline executed successfully'
+            }
+        }
+    }
 }
 
-.header select{
-    padding:6px;
-    border-radius:6px;
-    border:none;
+4
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Create File') {
+            steps {
+                bat 'echo This file is created by Jenkins > demo.txt'
+            }
+        }
+    }
 }
 
-/* BADGE */
-.cart{
-    position:relative;
-    cursor:pointer;
+5
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Read File') {
+            steps {
+                bat 'type README.md'
+            }
+        }
+    }
 }
 
-.badge{
-    position:absolute;
-    top:-6px;
-    right:-6px;
-    background:red;
-    color:white;
-    font-size:12px;
-    padding:2px 6px;
-    border-radius:50%;
-}
-
-/* LOGIN */
-#loginPage{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.loginbox{
-    background:white;
-    padding:25px;
-    width:280px;
-    border-radius:12px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.2);
-    text-align:center;
-}
-
-input{
-    width:100%;
-    padding:10px;
-    margin:10px 0;
-}
-
-/* TABS */
-.tabs{
-    text-align:center;
-    margin:10px;
-}
-
-.tabs button{
-    padding:8px 14px;
-    margin:5px;
-    border:none;
-    border-radius:20px;
-    background:#ddd;
-    cursor:pointer;
-}
-
-/* CARD */
-.card{
-    background:white;
-    margin:12px;
-    padding:10px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
-}
-
-.card img{
-    width:90px;
-    height:90px;
-    border-radius:10px;
-    object-fit:cover;
-    margin-right:12px;
-}
-
-.card button{
-    background:#ff5a5f;
-    color:white;
-    border:none;
-    padding:6px 12px;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-/* PAGES */
-#homePage,#cartPage,#successPage{
-    display:none;
-}
-
-.success{
-    text-align:center;
-    padding:40px;
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- LOGIN PAGE -->
-<div id="loginPage">
-  <div class="loginbox">
-    <h2>FoodSwag</h2>
-
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-
-    <button onclick="login()">Login</button>
-
-    <p>Admin / 1234</p>
-  </div>
-</div>
-
-<!-- HOME PAGE -->
-<div id="homePage">
-
-<!-- HEADER -->
-<div class="header">
-
-  ☰ FoodSwag
-
-  <!-- RIGHT SIDE -->
-  <div class="rightBox">
-
-    <!-- SORT OPTION -->
-    <select onchange="sortItems(this.value)">
-      <option value="">Sort</option>
-      <option value="az">Name A-Z</option>
-      <option value="low">Price Low → High</option>
-      <option value="high">Price High → Low</option>
-    </select>
-
-    <!-- CART -->
-    <div class="cart" onclick="openCart()">
-      🛒 <span id="count" class="badge">0</span>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- CATEGORY -->
-<div class="tabs">
-
-  <button onclick="filter('all')">All</button>
-  <button onclick="filter('veg')">Veg</button>
-  <button onclick="filter('nonveg')">Non-Veg</button>
-  <button onclick="filter('drink')">Drinks</button>
-
-</div>
-
-<!-- PRODUCTS -->
-
-<div class="card veg" data-price="180">
-<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591">
-<div>
-<h3>Pizza</h3>
-₹180 <br>
-<button onclick="add('Pizza',180,this)">Add</button>
-</div>
-</div>
-
-<div class="card veg" data-price="90">
-<img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877">
-<div>
-<h3>French Fries</h3>
-₹90 <br>
-<button onclick="add('French Fries',90,this)">Add</button>
-</div>
-</div>
-
-<div class="card veg" data-price="120">
-<img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b">
-<div>
-<h3>Veg Fried Rice</h3>
-₹120 <br>
-<button onclick="add('Veg Fried Rice',120,this)">Add</button>
-</div>
-</div>
-
-<div class="card nonveg" data-price="220">
-<img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a">
-<div>
-<h3>Chicken Biryani</h3>
-₹220 <br>
-<button onclick="add('Chicken Biryani',220,this)">Add</button>
-</div>
-</div>
-
-<div class="card nonveg" data-price="260">
-<img src="https://images.unsplash.com/photo-1599043513900-ed6fe01d3833">
-<div>
-<h3>Mutton Biryani</h3>
-₹260 <br>
-<button onclick="add('Mutton Biryani',260,this)">Add</button>
-</div>
-</div>
-
-<div class="card nonveg" data-price="150">
-<img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092">
-<div>
-<h3>Shawarma</h3>
-₹150 <br>
-<button onclick="add('Shawarma',150,this)">Add</button>
-</div>
-</div>
-
-<div class="card drink" data-price="40">
-<img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97">
-<div>
-<h3>Coke</h3>
-₹40 <br>
-<button onclick="add('Coke',40,this)">Add</button>
-</div>
-</div>
-
-<div class="card drink" data-price="60">
-<img src="https://images.unsplash.com/photo-1589927986089-35812388d1f4">
-<div>
-<h3>Orange Juice</h3>
-₹60 <br>
-<button onclick="add('Orange Juice',60,this)">Add</button>
-</div>
-</div>
-
-<div class="card drink" data-price="60">
-<img src="https://images.unsplash.com/photo-1613478223719-2ab802602423">
-<div>
-<h3>Grape Juice</h3>
-₹60 <br>
-<button onclick="add('Grape Juice',60,this)">Add</button>
-</div>
-</div>
-
-</div>
-
-<!-- CART PAGE -->
-<div id="cartPage">
-
-<div class="header">
-  <span onclick="goHome()">← Back</span>
-  Your Cart
-</div>
-
-<div id="cartItems" style="padding:20px"></div>
-
-<div style="text-align:center">
-  <button onclick="placeOrder()">Place Order</button>
-</div>
-
-</div>
-
-<!-- SUCCESS PAGE -->
-<div id="successPage">
-
-<div class="header">
-  Order Status
-</div>
-
-<div class="success">
-
-<h2>✅ Order Successful</h2>
-<p>Your food is on the way</p>
-
-<button onclick="goHome()">Back Home</button>
-
-</div>
-
-</div>
-
-<script>
-
-let cart=[];
-
-/* LOGIN */
-function login(){
-
-  let u=username.value;
-  let p=password.value;
-
-  if(u=="admin" && p=="1234"){
-    loginPage.style.display="none";
-    homePage.style.display="block";
-  }else{
-    alert("Invalid Login");
-  }
-}
-
-/* FILTER */
-function filter(type){
-
-  let cards=document.querySelectorAll(".card");
-
-  cards.forEach(c=>c.style.display="none");
-
-  if(type=="all"){
-    cards.forEach(c=>c.style.display="flex");
-  }else{
-    document.querySelectorAll("."+type)
-    .forEach(c=>c.style.display="flex");
-  }
-}
-
-/* ADD */
-function add(name,price,btn){
-
-  cart.push({name,price});
-  count.innerText=cart.length;
-
-  btn.innerText="Remove";
-  btn.style.background="gray";
-
-  btn.onclick=function(){
-    remove(name,btn);
-  }
-}
-
-/* REMOVE */
-function remove(name,btn){
-
-  cart=cart.filter(i=>i.name!=name);
-
-  count.innerText=cart.length;
-
-  btn.innerText="Add";
-  btn.style.background="#ff5a5f";
-
-  btn.onclick=function(){
-    add(name,priceMap[name],btn);
-  }
-}
-
-/* PRICE MAP */
-let priceMap={
-  "Pizza":180,
-  "French Fries":90,
-  "Veg Fried Rice":120,
-  "Chicken Biryani":220,
-  "Mutton Biryani":260,
-  "Shawarma":150,
-  "Coke":40,
-  "Orange Juice":60,
-  "Grape Juice":60
-};
-
-/* SORT */
-function sortItems(type){
-
-  let cards=[...document.querySelectorAll(".card")];
-
-  if(type=="az"){
-    cards.sort((a,b)=>{
-      return a.querySelector("h3").innerText
-      .localeCompare(b.querySelector("h3").innerText);
-    });
-  }
-
-  if(type=="low"){
-    cards.sort((a,b)=>{
-      return a.dataset.price - b.dataset.price;
-    });
-  }
-
-  if(type=="high"){
-    cards.sort((a,b)=>{
-      return b.dataset.price - a.dataset.price;
-    });
-  }
-
-  cards.forEach(c=>homePage.appendChild(c));
-}
-
-/* CART */
-function openCart(){
-
-  homePage.style.display="none";
-  cartPage.style.display="block";
-
-  let total=0;
-  let html="";
-
-  cart.forEach(i=>{
-    html+=`<p>${i.name} - ₹${i.price}</p>`;
-    total+=i.price;
-  });
-
-  html+=`<hr><h3>Total: ₹${total}</h3>`;
-
-  cartItems.innerHTML=html;
-}
-
-/* ORDER */
-function placeOrder(){
-
-  cart=[];
-  count.innerText=0;
-
-  cartPage.style.display="none";
-  successPage.style.display="block";
-
-  resetButtons();
-}
-
-/* RESET */
-function resetButtons(){
-
-  let btns=document.querySelectorAll(".card button");
-
-  btns.forEach(b=>{
-
-    let name=b.parentElement.querySelector("h3").innerText;
-
-    b.innerText="Add";
-    b.style.background="#ff5a5f";
-
-    b.onclick=function(){
-      add(name,priceMap[name],b);
-    };
-
-  });
-}
-
-/* HOME */
-function goHome(){
-
-  cartPage.style.display="none";
-  successPage.style.display="none";
-
-  homePage.style.display="block";
-}
-
-</script>
-
-</body>
-</html>
